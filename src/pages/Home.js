@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import CTA from "../styled/CTA";
 import { StyledTitle } from "../styled/random";
 
-const Home = () => {
+const Home = ({ history }) => {
+  const startGame = useCallback(
+    (event) => {
+      if (event.key === "s") history.push("/game");
+    },
+    [history]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keyup", startGame);
+    return () => document.removeEventListener("keyup", startGame);
+  }, [startGame]);
+
   return (
     <div>
       <StyledTitle>Ready to Type?</StyledTitle>

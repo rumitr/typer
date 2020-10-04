@@ -9,52 +9,65 @@ import {
 import { Strong } from "../styled/random";
 
 const Game = ({ history }) => {
-  const MAX_SECONDS = 5;
+  // const MAX_SECONDS = 2;
   const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
 
   const [currentCharacter, setCurrentCharacter] = useState("");
   const [score, setScore] = useScore();
-  const [ms, setMs] = useState(0);
-  const [seconds, setSeconds] = useState(MAX_SECONDS);
-  // const [timer, setTimer] = useState(200);
+  // const [ms, setMs] = useState(0);
+  // const [seconds, setSeconds] = useState(MAX_SECONDS);
+  const [timer, setTimer] = useState(200);
 
   useEffect(() => {
     setRandomCharacter();
     setScore(0);
-    const currentTime = new Date();
-    const interval = setInterval(() => updateTime(currentTime), 1);
-    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setScore]);
-
-  const updateTime = (startTime) => {
-    const endDate = new Date();
-    const msPassedStr = (endDate.getTime() - startTime.getTime()).toString();
-    const formattedMsPassed = ("0000" + msPassedStr).slice(-5);
-    const updatedSeconds =
-      MAX_SECONDS - parseInt(formattedMsPassed.substring(0, 2)) - 1;
-    const updatedMS =
-      1000 -
-      parseInt(formattedMsPassed.substring(formattedMsPassed.length - 3));
-
-    setSeconds(addLeadingZeros(updatedSeconds, 2));
-    setMs(addLeadingZeros(updatedMS, 3));
-  };
-
-  const addLeadingZeros = (num, length) => {
-    let zeros = "";
-    for (let index = 0; index < length; index++) {
-      zeros += "0";
-    }
-
-    return (zeros + num).slice(-length);
-  };
+  }, []);
 
   useEffect(() => {
-    if (seconds <= -1) {
+    if (timer === 0) {
       history.push("/gameOver");
     }
-  }, [seconds, ms, history]);
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => setTimer((prev) => prev - 1), 1);
+    return () => clearInterval(interval);
+  }, []);
+  // useEffect(() => {
+  //   const currentTime = new Date();
+  //   const interval = setInterval(() => updateTime(currentTime), 1);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+  // const updateTime = (startTime) => {
+  //   const endDate = new Date();
+  //   const msPassedStr = (endDate.getTime() - startTime.getTime()).toString();
+  //   const formattedMsPassed = ("0000" + msPassedStr).slice(-5);
+  //   const updatedSeconds =
+  //     MAX_SECONDS - parseInt(formattedMsPassed.substring(0, 2)) - 1;
+  //   const updatedMS =
+  //     1000 -
+  //     parseInt(formattedMsPassed.substring(formattedMsPassed.length - 3));
+
+  //   setSeconds(addLeadingZeros(updatedSeconds, 2));
+  //   setMs(addLeadingZeros(updatedMS, 3));
+  // };
+
+  // const addLeadingZeros = (num, length) => {
+  //   let zeros = "";
+  //   for (let index = 0; index < length; index++) {
+  //     zeros += "0";
+  //   }
+
+  //   return (zeros + num).slice(-length);
+  // };
+
+  // useEffect(() => {
+  //   if (seconds <= -1) {
+  //     history.push("/gameOver");
+  //   }
+  // }, [seconds, ms, history]);
 
   const keyUpHandler = useCallback(
     (event) => {
@@ -64,6 +77,7 @@ const Game = ({ history }) => {
         setScore((prev) => prev - 1);
       }
       setRandomCharacter();
+      setTimer(200);
     },
     [currentCharacter, setScore]
   );
@@ -88,7 +102,8 @@ const Game = ({ history }) => {
       <StyledTimer>
         Time:{" "}
         <Strong>
-          {seconds}: {ms}
+          {/* {seconds}: {ms} */}
+          {timer}
         </Strong>
       </StyledTimer>
     </StyledGame>
