@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScoresList, ScoreLI, StyledTable } from "../styled/HighScores";
+import { StyledTable } from "../styled/HighScores";
 import { StyledTitle } from "../styled/random";
 
 export default function HighScores() {

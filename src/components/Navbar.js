@@ -5,13 +5,11 @@ import {
   StyledNavBrand,
   StyledNavItems,
   StyledLinkButton,
-  ToggleSwitch,
   CheckBoxLabel,
   CheckBox,
   CheckBoxWrapper,
 } from "../styled/StyledNavbar";
 import { Accent } from "../styled/random";
-import useTheme from "../hooks/useTheme";
 
 const Navbar = ({ toggleTheme }) => {
   return (
