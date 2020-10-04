@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useScore } from "../context/ScoreContxt";
 import {
   StyledGame,
   StyledScore,
@@ -7,15 +8,86 @@ import {
 } from "../styled/Game";
 import { Strong } from "../styled/random";
 
-const Game = () => {
+const Game = ({ history }) => {
+  const MAX_SECONDS = 5;
+  const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+  const [currentCharacter, setCurrentCharacter] = useState("");
+  const [score, setScore] = useScore();
+  const [ms, setMs] = useState(0);
+  const [seconds, setSeconds] = useState(MAX_SECONDS);
+
+  useEffect(() => {
+    setRandomCharacter();
+    setScore(0);
+    const currentTime = new Date();
+    const interval = setInterval(() => updateTime(currentTime), 1);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const updateTime = (startTime) => {
+    const endDate = new Date();
+    const msPassedStr = (endDate.getTime() - startTime.getTime()).toString();
+    const formattedMsPassed = ("0000" + msPassedStr).slice(-5);
+    const updatedSeconds =
+      MAX_SECONDS - parseInt(formattedMsPassed.substring(0, 2)) - 1;
+    const updatedMS =
+      1000 -
+      parseInt(formattedMsPassed.substring(formattedMsPassed.length - 3));
+
+    setSeconds(addLeadingZeros(updatedSeconds, 2));
+    setMs(addLeadingZeros(updatedMS, 3));
+  };
+
+  const addLeadingZeros = (num, length) => {
+    let zeros = "";
+    for (let index = 0; index < length; index++) {
+      zeros += "0";
+    }
+
+    return (zeros + num).slice(-length);
+  };
+
+  useEffect(() => {
+    if (seconds <= -1) {
+      history.push("/gameOver");
+    }
+  }, [seconds, ms, history]);
+
+  const keyUpHandler = useCallback(
+    (event) => {
+      if (event.key === currentCharacter) {
+        setScore((prev) => prev + 1);
+      } else {
+        setScore((prev) => prev - 1);
+      }
+      setRandomCharacter();
+    },
+    [currentCharacter]
+  );
+  const setRandomCharacter = () => {
+    const randomInt = Math.floor(Math.random() * characters.length);
+    setCurrentCharacter(characters[randomInt]);
+  };
+
+  useEffect(() => {
+    document.addEventListener("keyup", keyUpHandler);
+    return () => {
+      document.removeEventListener("keyup", keyUpHandler);
+    };
+  }, [keyUpHandler]);
+
   return (
     <StyledGame>
       <StyledScore>
-        Score: <Strong>0</Strong>
+        Score: <Strong>{score}</Strong>
       </StyledScore>
-      <StyledCharacter>A</StyledCharacter>
+      <StyledCharacter>{currentCharacter}</StyledCharacter>
       <StyledTimer>
-        Time: <Strong>00: 000</Strong>
+        Time:{" "}
+        <Strong>
+          {seconds}: {ms}
+        </Strong>
       </StyledTimer>
     </StyledGame>
   );
