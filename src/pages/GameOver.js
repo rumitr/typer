@@ -20,7 +20,6 @@ const GameOver = ({ history }) => {
         if (data.id)
           setScoreMessage("Congratulations, you have a high score!!");
         else setScoreMessage("Sorry, you do not have  high score");
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -47,10 +46,14 @@ const GameOver = ({ history }) => {
   return (
     <div>
       <StyledTitle>Game Over</StyledTitle>
-      <p>{score}</p>
-      <StyledCharacter>{scoreMessage}</StyledCharacter>
-      <StyledLinkButton to="/">Home</StyledLinkButton>
-      <StyledLinkButton to="/game">Play Again</StyledLinkButton>
+      <h2>{scoreMessage}</h2>
+      <StyledCharacter>{score}</StyledCharacter>
+      <div>
+        <StyledLinkButton to="/">Home</StyledLinkButton>
+      </div>
+      <div>
+        <StyledLinkButton to="/game">Play Again</StyledLinkButton>
+      </div>
     </div>
   );
 };

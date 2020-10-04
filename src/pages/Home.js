@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import CTA from "../styled/CTA";
-import { StyledTitle } from "../styled/random";
+import { StyledTitle, Accent } from "../styled/random";
 
 const Home = ({ history }) => {
   const startGame = useCallback(
@@ -18,7 +18,9 @@ const Home = ({ history }) => {
   return (
     <div>
       <StyledTitle>Ready to Type?</StyledTitle>
-      <CTA to="/game">Click or type to start playing!</CTA>
+      <CTA to="/game">
+        Click or type <Accent>s</Accent> to start playing!
+      </CTA>
     </div>
   );
 };

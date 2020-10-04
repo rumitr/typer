@@ -6,12 +6,15 @@ import {
   StyledNavItems,
   StyledLinkButton,
 } from "../styled/StyledNavbar";
+import { Accent } from "../styled/random";
 
 const Navbar = () => {
   return (
     <StyledNavBar>
       <StyledNavBrand>
-        <Link to="/">Typer</Link>
+        <Link to="/">
+          C<Accent>t</Accent>rl
+        </Link>
       </StyledNavBrand>
       <StyledNavItems>
         <li>
