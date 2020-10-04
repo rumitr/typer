@@ -5,10 +5,15 @@ import {
   StyledNavBrand,
   StyledNavItems,
   StyledLinkButton,
+  ToggleSwitch,
+  CheckBoxLabel,
+  CheckBox,
+  CheckBoxWrapper,
 } from "../styled/StyledNavbar";
 import { Accent } from "../styled/random";
+import useTheme from "../hooks/useTheme";
 
-const Navbar = () => {
+const Navbar = ({ toggleTheme }) => {
   return (
     <StyledNavBar>
       <StyledNavBrand>
@@ -21,11 +26,17 @@ const Navbar = () => {
           <StyledLinkButton to="/home">Home</StyledLinkButton>
         </li>
         <li>
-          <StyledLinkButton to="/game">Game</StyledLinkButton>
+          <StyledLinkButton to="/game">
+            <Accent>Game</Accent>
+          </StyledLinkButton>
         </li>
         <li>
           <StyledLinkButton to="/highScore">High Scores</StyledLinkButton>
         </li>
+        <CheckBoxWrapper>
+          <CheckBox id="checkbox" type="checkbox" onClick={toggleTheme} />
+          <CheckBoxLabel htmlFor="checkbox" />
+        </CheckBoxWrapper>
       </StyledNavItems>
     </StyledNavBar>
   );
