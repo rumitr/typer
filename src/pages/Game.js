@@ -63,7 +63,7 @@ const Game = ({ history }) => {
       }
       setRandomCharacter();
     },
-    [currentCharacter]
+    [currentCharacter, setScore]
   );
   const setRandomCharacter = () => {
     const randomInt = Math.floor(Math.random() * characters.length);
